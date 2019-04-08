@@ -208,7 +208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mat: {fileID: 2100000, guid: a668a2c6e4d280c4e8445105bed76f8f, type: 2}
-  brick_count_x: 6
+  brick_count_x: 4
   brick_count_y: 6
   resolution_x: 256
   resolution_y: 256
