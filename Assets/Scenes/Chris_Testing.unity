@@ -124,6 +124,7 @@ GameObject:
   - component: {fileID: 1217882}
   - component: {fileID: 1217881}
   - component: {fileID: 1217884}
+  - component: {fileID: 1217885}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -209,9 +210,34 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   mat: {fileID: 2100000, guid: a668a2c6e4d280c4e8445105bed76f8f, type: 2}
   brick_count_x: 4
-  brick_count_y: 6
+  brick_count_y: 8
   resolution_x: 256
   resolution_y: 256
+  bn: {fileID: 1217885}
+--- !u!114 &1217885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1217880}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b50bae7251066d44b00e474a49e7f98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  brickMat: {fileID: 0}
+  brickMesh: {fileID: 0}
+  brickColor: {r: 1, g: 0, b: 0, a: 0}
+  perlinOffset: 421
+  xSplotching: 0.006
+  ySplotching: 0.006
+  xHoling: 0.015
+  yHoling: 0.015
+  holeCutoff: 0.15
+  xLining: 0.002
+  yLining: 0.006
+  lineCutoff: 0.05
 --- !u!1 &236808235
 GameObject:
   m_ObjectHideFlags: 0
@@ -950,7 +976,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1729111734}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.020189345, y: -0.94623953, z: -5.4300327}
+  m_LocalPosition: {x: -2.765, y: -0.94623953, z: -5.4300327}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 595699320}

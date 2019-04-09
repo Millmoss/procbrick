@@ -6,8 +6,8 @@ public class BrickNoise : MonoBehaviour
 {
 	public Material brickMat;
 	public GameObject brickMesh;
-	public int xSize;
-	public int ySize;
+	//public int xSize;
+	//public int ySize;
 	public Color brickColor;
 	public int perlinOffset;
 	public float xSplotching = 0.006f;
@@ -21,13 +21,13 @@ public class BrickNoise : MonoBehaviour
 
 	private float[,] holes;
 
-    void Start()
-    {
+    public void GenerateTexture(int xSize, int ySize, ref List<Color> colors, ref List<Color> normals)
+    {/*
 		brickMesh.GetComponent<MeshRenderer>().material = brickMat;
-
-		Texture2D brickTexture = new Texture2D(xSize, ySize, TextureFormat.ARGB32, false);
-		Texture2D brickNormals = new Texture2D(xSize, ySize, TextureFormat.ARGB32, false);
-		holes = new float[xSize, ySize];
+        
+        Texture2D brickTexture = new Texture2D(xSize, ySize, TextureFormat.ARGB32, false);
+        Texture2D brickNormals = new Texture2D(xSize, ySize, TextureFormat.ARGB32, false);*/
+        holes = new float[xSize, ySize];
 
 		for (int y = 0; y < ySize; y++)
 		{
@@ -46,10 +46,9 @@ public class BrickNoise : MonoBehaviour
 					zLine = 1f;
 				else
 					zLine /= 1f / lineCutoff * Mathf.PerlinNoise(x * 9.67f - perlinOffset, y * 8.2f + perlinOffset);
-				brickTexture.SetPixel(x, y, brickColor * zSplotch * zHole * zLine);
+				colors.Add(brickColor * zSplotch * zHole * zLine);
 			}
 		}
-		brickTexture.Apply();
 
 		for (int y = 0; y < ySize; y++)
 		{
@@ -57,7 +56,7 @@ public class BrickNoise : MonoBehaviour
 			{
 				if (x == 0 || y == 0 || y == ySize - 1 || x == xSize - 1 || holes[x, y] >= 0.9f)
 				{
-					brickNormals.SetPixel(x, y, new Color(.5f, .5f, 1));
+					normals.Add(new Color(.5f, .5f, 1));
 					continue;
 				}
 				float xDif = holes[x + 1, y] - holes[x, y] + holes[x, y] - holes[x - 1, y];
@@ -67,13 +66,14 @@ public class BrickNoise : MonoBehaviour
 				Vector3 dir = new Vector3(-xDif, -(xDif + yDif) / 2, -yDif * 2);
 				dir += Vector3.one;
 				dir /= 2;
-				brickNormals.SetPixel(x, y, new Color(dir.x, dir.y, dir.z));
+                normals.Add(new Color(dir.x, dir.y, dir.z));
 			}
 		}
+        /*
 		brickNormals.Apply();
 
 		brickMat.SetTexture("_MainTex", brickTexture);
-		brickMat.SetTexture("_BumpMap", brickNormals);
+		brickMat.SetTexture("_BumpMap", brickNormals);*/
 	}
 	
     void Update()
