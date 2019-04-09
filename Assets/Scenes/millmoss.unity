@@ -218,9 +218,9 @@ MonoBehaviour:
   perlinOffset: 1000
   xSplotching: 0.001
   ySplotching: 0.002
-  xSpotting: 0.015
-  ySpotting: 0.015
-  spotCutoff: 0
+  xSpotting: 1.7
+  ySpotting: 1.7
+  spotCutoff: 0.1
   xBlotching: 0.002
   yBlotching: 0.001
 --- !u!4 &358861373
@@ -314,7 +314,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 534669902}
   m_LocalRotation: {x: 0.50000006, y: -0.49999997, z: 0.49999997, w: 0.5000001}
-  m_LocalPosition: {x: -5.62, y: 8.25, z: -3.8}
+  m_LocalPosition: {x: 1.48, y: 2.18, z: -3.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -507,7 +507,7 @@ MonoBehaviour:
   brickMesh: {fileID: 909484964}
   xSize: 256
   ySize: 128
-  brickColor: {r: 0.9245283, g: 0.28446323, b: 0.23113208, a: 0}
+  brickColor: {r: 1, g: 0.29241872, b: 0.23113209, a: 0}
   perlinOffset: 1100
   xSplotching: 0.006
   ySplotching: 0.006
