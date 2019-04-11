@@ -209,10 +209,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mat: {fileID: 2100000, guid: a668a2c6e4d280c4e8445105bed76f8f, type: 2}
-  brick_count_x: 4
-  brick_count_y: 8
+  num_brick_x: 4
+  num_brick_y: 8
   resolution_x: 256
   resolution_y: 256
+  mortar_width: 5
+  mortar_height: 3
   bn: {fileID: 1217885}
 --- !u!114 &1217885
 MonoBehaviour:
@@ -228,7 +230,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   brickMat: {fileID: 0}
   brickMesh: {fileID: 0}
-  brickColor: {r: 1, g: 0, b: 0, a: 0}
+  brickColor: {r: 0.5, g: 0, b: 0, a: 0}
   perlinOffset: 421
   xSplotching: 0.006
   ySplotching: 0.006
@@ -256,7 +258,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &236808236
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -347,7 +349,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &311714762
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -438,7 +440,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &573933021
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -567,7 +569,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1097647333
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -658,7 +660,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1280218992
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -749,7 +751,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1318958900
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1000,7 +1002,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1945686481
 BoxCollider:
   m_ObjectHideFlags: 0
