@@ -14,11 +14,18 @@ public class CreateTexture : MonoBehaviour
     public int mortar_width, mortar_height;
     private int x_dif, y_dif;
     public BrickNoise bn;
+    public ConcreteNoise cn;
+    public CeramicNoise rn;
+    public Color between_color = Color.gray;
+    public bool gen_brick, gen_con, gen_cera, stagger_tiles;
+
     private int brick_count_x, brick_count_y;
     private Point[] points;
     private int perlin_offset = 0;
 
+
     // Start is called before the first frame update
+    //This is just the general render function, should prob push it in its own spot.
     void Start()
     {
 
@@ -32,9 +39,12 @@ public class CreateTexture : MonoBehaviour
         //Instantate points
         for (int y = 0;y < brick_count_y;y++)
         {
-            for(int x = 0; x < brick_count_x;x++)
+            int mod_y = 1;
+            if (stagger_tiles)
+                mod_y = y % 2;
+            for (int x = 0; x < brick_count_x;x++)
             {
-                Point new_point = new Point(x_dif * (x) + ((y % 2) * x_dif / 2), y_dif * y + y_dif / 2);
+                Point new_point = new Point(x_dif * (x) + (mod_y * x_dif / 2), y_dif * y + y_dif / 2);
                 points[x + y * brick_count_x] = new_point;
             }
         }
@@ -45,7 +55,8 @@ public class CreateTexture : MonoBehaviour
         {
             for(int x=0;x < resolution_x;x++)
             {
-                texture.SetPixel(x, y, Color.gray);
+                float pn = Mathf.PerlinNoise(x * .1f, y * .1f);
+                texture.SetPixel(x, y, between_color * (0.90f + pn*.1f));
                 perlin_offset++;
             }
         }
@@ -73,9 +84,20 @@ public class CreateTexture : MonoBehaviour
                 //Generate the brick texture at each brick.
                 List<Color> colors = new List<Color>();
                 List<Color> normals = new List<Color>();
-
-                bn.GenerateTexture(x_dif - mortar_width, y_dif - mortar_height, ref colors, ref normals);
-                bn.perlinOffset++;
+                if(gen_brick)
+                { 
+                    bn.GenerateTexture(x_dif - mortar_width, y_dif - mortar_height, ref colors, ref normals);
+                    bn.perlinOffset++;
+                }
+                else if(gen_con)
+                {
+                    cn.GenerateTexture(x_dif - mortar_width, y_dif - mortar_height, ref colors, ref normals);
+                    cn.perlinOffset++;
+                }
+                else if(gen_cera)
+                {
+                    rn.GenerateTexture(x_dif - mortar_width, y_dif - mortar_height, ref colors, ref normals);
+                }
                 int x_count = 0, y_count = 0;
                 for(int y = (-y_dif + mortar_width) / 2; y < (y_dif - mortar_width) / 2; y++)
                 {

@@ -6,8 +6,6 @@ public class ConcreteNoise : MonoBehaviour
 {
 	public Material concreteMat;
 	public GameObject concreteMesh;
-	public int xSize;
-	public int ySize;
 	public Color concreteColor;
 	public int perlinOffset;
 	public float xSplotching = 0.006f;
@@ -20,13 +18,10 @@ public class ConcreteNoise : MonoBehaviour
 
 	private float[,] spots;
 
-	void Start()
-	{
-		concreteMesh.GetComponent<MeshRenderer>().material = concreteMat;
-		spots = new float[xSize, ySize];
+    public void GenerateTexture(int xSize, int ySize, ref List<Color> colors, ref List<Color> normals)
+    {
 
-		Texture2D concreteTexture = new Texture2D(xSize, ySize, TextureFormat.ARGB32, false);
-		Texture2D concreteNormals = new Texture2D(xSize, ySize, TextureFormat.ARGB32, false);
+		spots = new float[xSize, ySize];
 
 		for (int y = 0; y < ySize; y++)
 		{
@@ -40,10 +35,9 @@ public class ConcreteNoise : MonoBehaviour
 				else
 					zSpot = 1;
 				spots[x, y] = zSpot;
-				concreteTexture.SetPixel(x, y, concreteColor * zSplotch * zBlotch * zSpot);
+				colors.Add(concreteColor * zSplotch * zBlotch * zSpot);
 			}
 		}
-		concreteTexture.Apply();
 
 		for (int y = 0; y < ySize; y++)
 		{
@@ -51,7 +45,7 @@ public class ConcreteNoise : MonoBehaviour
 			{
 				if (x == 0 || y == 0 || y == ySize - 1 || x == xSize - 1 || spots[x, y] >= 0.9f)
 				{
-					concreteNormals.SetPixel(x, y, new Color(.5f, .5f, 1));
+                    colors.Add(new Color(.5f, .5f, 1));
 					continue;
 				}
 				float xDif = spots[x + 1, y] - spots[x, y] + spots[x, y] - spots[x - 1, y];
@@ -61,13 +55,9 @@ public class ConcreteNoise : MonoBehaviour
 				Vector3 dir = new Vector3(-xDif, -(xDif + yDif) / 2, -yDif);
 				dir += Vector3.one;
 				dir /= 2;
-				concreteNormals.SetPixel(x, y, new Color(dir.x, dir.y, dir.z));
+                colors.Add(new Color(dir.x, dir.y, dir.z));
 			}
 		}
-		concreteNormals.Apply();
-
-		concreteMat.SetTexture("_MainTex", concreteTexture);
-		concreteMat.SetTexture("_BumpMap", concreteNormals);
 	}
 
 	void Update()
