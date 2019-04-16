@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 
 public class CreateTexture : MonoBehaviour
@@ -55,8 +56,9 @@ public class CreateTexture : MonoBehaviour
         {
             for(int x=0;x < resolution_x;x++)
             {
-                float pn = Mathf.PerlinNoise(x * .1f, y * .1f);
-                texture.SetPixel(x, y, between_color * (0.90f + pn*.1f));
+                float pn = Mathf.PerlinNoise(x * .05f, y * .05f);
+                texture.SetPixel(x, y, between_color * (0.95f + pn*.05f) + new Color(0, 0, 0, 255));
+                //texture.SetPixel(x, y, between_color * pn + new Color(0, 0, 0, 255));
                 perlin_offset++;
             }
         }
@@ -86,18 +88,19 @@ public class CreateTexture : MonoBehaviour
                 List<Color> normals = new List<Color>();
                 if(gen_brick)
                 { 
-                    bn.GenerateTexture(x_dif - mortar_width, y_dif - mortar_height, ref colors, ref normals);
-                    bn.perlinOffset++;
-                }
+                    bn.GenerateTexture(x_dif - mortar_width, y_dif - mortar_height, ref colors, ref normals, (int)Random.value * 100);
+                    bn.perlinOffset -= (int)(1000 * Random.value);
+				}
                 else if(gen_con)
                 {
                     cn.GenerateTexture(x_dif - mortar_width, y_dif - mortar_height, ref colors, ref normals);
-                    cn.perlinOffset++;
-                }
+                    cn.perlinOffset -= (int)(1000 * Random.value);
+				}
                 else if(gen_cera)
                 {
                     rn.GenerateTexture(x_dif - mortar_width, y_dif - mortar_height, ref colors, ref normals);
-                }
+					rn.perlinOffset -= (int)(1000 * Random.value);
+				}
                 int x_count = 0, y_count = 0;
                 for(int y = (-y_dif + mortar_width) / 2; y < (y_dif - mortar_width) / 2; y++)
                 {
@@ -126,7 +129,13 @@ public class CreateTexture : MonoBehaviour
 
         texture.Apply();
         mat.mainTexture = texture;
-    }
+
+		byte[] bytes = ImageConversion.EncodeToPNG(texture);
+		FileStream file = File.Open(Application.dataPath + "/tile.png", FileMode.Create);
+		BinaryWriter binary = new BinaryWriter(file);
+		binary.Write(bytes);
+		file.Close();
+	}
 
     //Returns null if the point is invalid
     private Point getPoint(int x, int y)

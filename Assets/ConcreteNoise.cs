@@ -27,15 +27,16 @@ public class ConcreteNoise : MonoBehaviour
 		{
 			for (int x = 0; x < xSize; x++)
 			{
-				float zSplotch = (Mathf.Clamp(Mathf.PerlinNoise(x * xSplotching + perlinOffset, y * ySplotching + perlinOffset), 0.3f, 1f) + .5f) / 1.5f;
-				float zSpot = Mathf.PerlinNoise(x * xSpotting - perlinOffset, y * ySpotting - perlinOffset);
-				float zBlotch = (Mathf.Clamp(Mathf.PerlinNoise(x * xBlotching - perlinOffset, y * yBlotching - perlinOffset), 0.3f, 1f) + .5f) / 1.5f;
+				float zSplotch = (Mathf.Clamp(Mathf.PerlinNoise(x * xSplotching + perlinOffset, y * ySplotching + perlinOffset), 0.3f, 1f) + 2f) / 3f;
+				float zSpot = Mathf.PerlinNoise(x * xSpotting + 2.7f * perlinOffset, y * ySpotting + 2.7f * perlinOffset);
+				float zBlotch = (Mathf.Clamp(Mathf.PerlinNoise(x * xBlotching + 10f * perlinOffset, y * yBlotching +  10f * perlinOffset), 0.3f, 1f) + 2f) / 3f;
 				if (zSpot <= spotCutoff)
 					zSpot *= 1f / spotCutoff;
 				else
 					zSpot = 1;
+				zSpot = (zSpot + 3f) / 4f;
 				spots[x, y] = zSpot;
-				colors.Add(concreteColor * zSplotch * zBlotch * zSpot);
+				colors.Add(concreteColor * zSplotch * zBlotch * zSpot + new Color(0, 0, 0, 255));
 			}
 		}
 
@@ -45,7 +46,7 @@ public class ConcreteNoise : MonoBehaviour
 			{
 				if (x == 0 || y == 0 || y == ySize - 1 || x == xSize - 1 || spots[x, y] >= 0.9f)
 				{
-                    colors.Add(new Color(.5f, .5f, 1));
+                    colors.Add(new Color(.5f, .5f, 1) + new Color(0, 0, 0, 255));
 					continue;
 				}
 				float xDif = spots[x + 1, y] - spots[x, y] + spots[x, y] - spots[x - 1, y];
@@ -55,7 +56,7 @@ public class ConcreteNoise : MonoBehaviour
 				Vector3 dir = new Vector3(-xDif, -(xDif + yDif) / 2, -yDif);
 				dir += Vector3.one;
 				dir /= 2;
-                colors.Add(new Color(dir.x, dir.y, dir.z));
+                colors.Add(new Color(dir.x, dir.y, dir.z, 255));
 			}
 		}
 	}

@@ -192,7 +192,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1217880}
   m_LocalRotation: {x: 0.01745457, y: -0.7130071, z: 0.017760672, w: 0.70071447}
-  m_LocalPosition: {x: -0.478296, y: 0.2646166, z: 0.038653646}
+  m_LocalPosition: {x: 0.06, y: 0.099, z: 0.038653646}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -213,17 +213,17 @@ MonoBehaviour:
   mat: {fileID: 2100000, guid: a668a2c6e4d280c4e8445105bed76f8f, type: 2}
   num_brick_x: 4
   num_brick_y: 8
-  resolution_x: 256
-  resolution_y: 256
-  mortar_width: 5
-  mortar_height: 3
+  resolution_x: 1024
+  resolution_y: 1024
+  mortar_width: 4
+  mortar_height: 4
   bn: {fileID: 1217885}
   cn: {fileID: 1217886}
   rn: {fileID: 1217887}
-  between_color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  gen_brick: 0
+  between_color: {r: 0.8113208, g: 0.8113208, b: 0.8113208, a: 1}
+  gen_brick: 1
   gen_con: 0
-  gen_cera: 1
+  gen_cera: 0
   stagger_tiles: 1
 --- !u!114 &1217885
 MonoBehaviour:
@@ -239,16 +239,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   brickMat: {fileID: 2100000, guid: 9a7a47f49ad5f904c83467aba4ea6401, type: 2}
   brickMesh: {fileID: 0}
+  seed: 1
   brickColor: {r: 1, g: 0.29241872, b: 0.23113209, a: 0}
   perlinOffset: 1100
-  xSplotching: 0.006
-  ySplotching: 0.006
-  xHoling: 0.8
-  yHoling: 0.8
-  holeCutoff: 0.05
-  xLining: 0.0025
-  yLining: 0.01
-  lineCutoff: 0.5
+  xSplotching: 0.002
+  ySplotching: 0.002
+  xHoling: 0.3
+  yHoling: 0.3
+  holeCutoff: 0.15
+  crackChance: 0.7
+  crackIncrement: 1.5
+  crackWidth: 5
+  crackShift: 0.1
 --- !u!114 &1217886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -264,14 +266,14 @@ MonoBehaviour:
   concreteMat: {fileID: 2100000, guid: c59cccd9cddb64c459a490c88d996aba, type: 2}
   concreteMesh: {fileID: 0}
   concreteColor: {r: 0.6415094, g: 0.6384834, b: 0.6384834, a: 0}
-  perlinOffset: 1000
-  xSplotching: 0.001
-  ySplotching: 0.002
-  xSpotting: 1.7
-  ySpotting: 1.7
-  spotCutoff: 0.1
-  xBlotching: 0.002
-  yBlotching: 0.001
+  perlinOffset: 20000
+  xSplotching: 0.0025
+  ySplotching: 0.005
+  xSpotting: 0.51
+  ySpotting: 0.51
+  spotCutoff: 0.05
+  xBlotching: 0.005
+  yBlotching: 0.0025
 --- !u!114 &1217887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -284,9 +286,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe3427b3188c30743854241455972ff5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ceramicColor: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 0}
-  perlin_impact: 0.1
-  perlin_scale: 0.1
+  ceramicColor: {r: 1, g: 1, b: 1, a: 0}
+  perlin_impact: 0.03
+  perlin_scale: 0.04
+  perlinOffset: 1000
 --- !u!1 &595699319
 GameObject:
   m_ObjectHideFlags: 0
@@ -473,7 +476,7 @@ Transform:
   m_GameObject: {fileID: 1729111734}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -2.765, y: -0.94623953, z: -5.4300327}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children: []
   m_Father: {fileID: 595699320}
   m_RootOrder: 0
