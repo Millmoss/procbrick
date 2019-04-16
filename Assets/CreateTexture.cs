@@ -8,6 +8,7 @@ public class CreateTexture : MonoBehaviour
     //TODO: Move all these to a seperate class to seperate the Unity side of things from the rest of the code.
 
     Texture2D texture;
+	Texture2D normal;
     public Material mat;
 
     public int num_brick_x, num_brick_y;
@@ -52,14 +53,16 @@ public class CreateTexture : MonoBehaviour
 
         //First generate a blank layer of mortar.
         texture = new Texture2D(resolution_x, resolution_y);
+        normal = new Texture2D(resolution_x, resolution_y);
         for(int y = 0;y  <resolution_y;y++)
         {
             for(int x=0;x < resolution_x;x++)
             {
                 float pn = Mathf.PerlinNoise(x * .05f, y * .05f);
                 texture.SetPixel(x, y, between_color * (0.95f + pn*.05f) + new Color(0, 0, 0, 255));
-                //texture.SetPixel(x, y, between_color * pn + new Color(0, 0, 0, 255));
-                perlin_offset++;
+				normal.SetPixel(x, y, new Color(.5f, .5f, 1));
+				//texture.SetPixel(x, y, between_color * pn + new Color(0, 0, 0, 255));
+				perlin_offset++;
             }
         }
 
@@ -88,7 +91,7 @@ public class CreateTexture : MonoBehaviour
                 List<Color> normals = new List<Color>();
                 if(gen_brick)
                 { 
-                    bn.GenerateTexture(x_dif - mortar_width, y_dif - mortar_height, ref colors, ref normals, (int)Random.value * 100);
+                    bn.GenerateTexture(x_dif - mortar_width, y_dif - mortar_height, ref colors, ref normals, (int)(Random.value * 10000f));
                     bn.perlinOffset -= (int)(1000 * Random.value);
 				}
                 else if(gen_con)
@@ -106,11 +109,14 @@ public class CreateTexture : MonoBehaviour
                 {
                     for (int x = (-x_dif + mortar_height) / 2; x < (x_dif - mortar_height) / 2; x++)
                     {
-                        
-                        if (p.x + x >= 0 && p.x + x < resolution_x &&
-                            p.y + y >= 0 && p.y + y < resolution_y)
-                            //texture.SetPixel(p.x + x , p.y + y, Color.magenta);
-                            texture.SetPixel(p.x + x , p.y + y, colors[x_count + y_count * (x_dif - mortar_width / 1)]);
+
+						if (p.x + x >= 0 && p.x + x < resolution_x &&
+							p.y + y >= 0 && p.y + y < resolution_y)
+						{
+							//texture.SetPixel(p.x + x , p.y + y, Color.magenta);
+							texture.SetPixel(p.x + x, p.y + y, colors[x_count + y_count * (x_dif - mortar_width / 1)]);
+							normal.SetPixel(p.x + x, p.y + y, normals[x_count + y_count * (x_dif - mortar_width / 1)]);
+						}
                         x_count++;
                     }
                     y_count++;
@@ -130,8 +136,8 @@ public class CreateTexture : MonoBehaviour
         texture.Apply();
         mat.mainTexture = texture;
 
-		byte[] bytes = ImageConversion.EncodeToPNG(texture);
-		FileStream file = File.Open(Application.dataPath + "/tile.png", FileMode.Create);
+		 byte[] bytes = ImageConversion.EncodeToPNG(normal);
+		FileStream file = File.Open(Application.dataPath + "/n.png", FileMode.Create);
 		BinaryWriter binary = new BinaryWriter(file);
 		binary.Write(bytes);
 		file.Close();

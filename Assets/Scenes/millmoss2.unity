@@ -249,7 +249,7 @@ MonoBehaviour:
   holeCutoff: 0.15
   crackChance: 0.7
   crackIncrement: 1.5
-  crackWidth: 5
+  crackWidth: 1
   crackShift: 0.1
 --- !u!114 &1217886
 MonoBehaviour:

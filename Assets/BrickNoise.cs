@@ -21,6 +21,7 @@ public class BrickNoise : MonoBehaviour
 	public float crackIncrement = 1.5f;
 	public int crackWidth = 2;
 	public float crackShift = .1f;
+	public float crackStopChance = .05f;
 
 	private float[,] pixels;
 	private float[,] cracks;
@@ -101,14 +102,15 @@ public class BrickNoise : MonoBehaviour
 						continue;
 					}
 
-					cracks[Mathf.RoundToInt(position.x) + x, Mathf.RoundToInt(position.y) + y] = 0;// (Mathf.Abs(x) + Mathf.Abs(y)) / (2 * crackWidth);
+					cracks[Mathf.RoundToInt(position.x) + x, Mathf.RoundToInt(position.y) + y] *= Mathf.Clamp01(Mathf.Abs(x) + Mathf.Abs(y) / (1f * crackWidth));
 				}
 			}
 			position += direction * crackIncrement;
 
-			while (position.x >= 0 && position.y >= 0 && position.y <= ySize - 1 && position.x <= xSize - 1)
+			while (position.x >= 0 && position.y >= 0 && position.y <= ySize - 1 && position.x <= xSize - 1 && Random.value > crackStopChance)
 			{
 				cracks[Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y)] = 0;
+				int i = 0;
 				for (int y = -crackWidth; y <= crackWidth; y++)
 				{
 					for (int x = -crackWidth; x <= crackWidth; x++)
@@ -119,8 +121,8 @@ public class BrickNoise : MonoBehaviour
 						{
 							continue;
 						}
-
-						cracks[Mathf.RoundToInt(position.x) + x, Mathf.RoundToInt(position.y) + y] = 0;// Mathf.Pow((Mathf.Abs(x) + Mathf.Abs(y)) / (2 * crackWidth), 2);
+						i++;
+						cracks[Mathf.RoundToInt(position.x) + x, Mathf.RoundToInt(position.y) + y] *= Mathf.Clamp01(Mathf.Abs(x) + Mathf.Abs(y) / (1f * crackWidth));
 					}
 				}
 				float xShift = 2 * (Random.value - .5f) * crackShift;
@@ -135,21 +137,36 @@ public class BrickNoise : MonoBehaviour
 		{
 			for (int x = 0; x < xSize; x++)
 			{
-				if (x == 0 || y == 0 || y == ySize - 1 || x == xSize - 1 || holes[x, y] >= 0.9f)
+				if (x == 0 || y == 0 || y == ySize - 1 || x == xSize - 1 || (holes[x, y] >= 0.9f && cracks[x, y] >= 0.9f))
 				{
 					colors.Add(brickColor * pixels[x, y] * cracks[x, y]);
-					normals.Add(new Color(.5f, .5f, 1));
+					normals.Add(new Color(.5f, .5f, 1f));
 					continue;
 				}
-				float xDif = holes[x + 1, y] - holes[x, y] + holes[x, y] - holes[x - 1, y];
-				xDif = xDif / 2 + holes[x, y] / 2;
-				float yDif = holes[x, y + 1] - holes[x, y] + holes[x, y] - holes[x, y - 1];
-				yDif = yDif / 2 + holes[x, y] / 2;
-				Vector3 dir = new Vector3(-xDif, -(xDif + yDif) / 2, -yDif * 2);
-				dir += Vector3.one;
-				dir /= 2;
-                normals.Add(new Color(dir.x, dir.y, dir.z));
-				colors.Add(brickColor * pixels[x, y] * cracks[x, y]);
+				if (cracks[x, y] >= 0.9f)
+				{
+					float dx = holes[x + 1, y] - holes[x - 1, y];
+					float dy = holes[x, y + 1] - holes[x, y - 1];
+					float div = Mathf.Sqrt(dx * dx + dy * dy + 1);
+					float xn = -dx / div;
+					float yn = -dy / div;
+					float zn = 1 / div;
+
+					normals.Add(new Color((xn + 1) / 2, (yn + 1) / 2, zn));
+					colors.Add(brickColor * pixels[x, y] * cracks[x, y]);
+				}
+				else
+				{
+					float dx = cracks[x + 1, y] - cracks[x - 1, y];
+					float dy = cracks[x, y + 1] - cracks[x, y - 1];
+					float div = Mathf.Sqrt(dx * dx + dy * dy + 1);
+					float xn = -dx / div;
+					float yn = -dy / div;
+					float zn = 1 / div;
+
+					normals.Add(new Color((xn + 1) / 2, (yn + 1) / 2, zn));
+					colors.Add(brickColor * pixels[x, y] * cracks[x, y]);
+				}
 			}
 		}
         /*
