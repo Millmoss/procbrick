@@ -191,8 +191,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1217880}
-  m_LocalRotation: {x: 0.01745457, y: -0.7130071, z: 0.017760672, w: 0.70071447}
-  m_LocalPosition: {x: -0.478296, y: 0.2646166, z: 0.038653646}
+  m_LocalRotation: {x: 0.011144962, y: -0.6334535, z: 0.009125677, w: 0.7736468}
+  m_LocalPosition: {x: -1.1192513, y: 0.11997342, z: -0.12885046}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -213,17 +213,18 @@ MonoBehaviour:
   mat: {fileID: 2100000, guid: a668a2c6e4d280c4e8445105bed76f8f, type: 2}
   num_brick_x: 4
   num_brick_y: 8
-  resolution_x: 256
-  resolution_y: 256
+  resolution_x: 1024
+  resolution_y: 1024
   mortar_width: 5
   mortar_height: 3
   bn: {fileID: 1217885}
   cn: {fileID: 1217886}
   rn: {fileID: 1217887}
   between_color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  gen_brick: 0
+  erode_height: 2
+  gen_brick: 1
   gen_con: 0
-  gen_cera: 1
+  gen_cera: 0
   stagger_tiles: 1
 --- !u!114 &1217885
 MonoBehaviour:
@@ -239,6 +240,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   brickMat: {fileID: 2100000, guid: 9a7a47f49ad5f904c83467aba4ea6401, type: 2}
   brickMesh: {fileID: 0}
+  seed: 0
   brickColor: {r: 1, g: 0.29241872, b: 0.23113209, a: 0}
   perlinOffset: 1100
   xSplotching: 0.006
@@ -246,9 +248,10 @@ MonoBehaviour:
   xHoling: 0.8
   yHoling: 0.8
   holeCutoff: 0.05
-  xLining: 0.0025
-  yLining: 0.01
-  lineCutoff: 0.5
+  crackChance: 0.1
+  crackIncrement: 1.5
+  crackWidth: 2
+  crackShift: 0.1
 --- !u!114 &1217886
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -287,6 +290,7 @@ MonoBehaviour:
   ceramicColor: {r: 0.7264151, g: 0.7264151, b: 0.7264151, a: 0}
   perlin_impact: 0.1
   perlin_scale: 0.1
+  perlinOffset: 1000
 --- !u!1 &595699319
 GameObject:
   m_ObjectHideFlags: 0

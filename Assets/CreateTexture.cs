@@ -18,6 +18,7 @@ public class CreateTexture : MonoBehaviour
     public ConcreteNoise cn;
     public CeramicNoise rn;
     public Color between_color = Color.gray;
+    public int erode_height = 5;
     public bool gen_brick, gen_con, gen_cera, stagger_tiles;
 
     private int brick_count_x, brick_count_y;
@@ -62,19 +63,36 @@ public class CreateTexture : MonoBehaviour
                 perlin_offset++;
             }
         }
-
         //Set positions of point's colors.
-        for(int p_x = 0; p_x < brick_count_x - 0;p_x++)
+        for (int p_x = 0; p_x < brick_count_x - 0; p_x++)
+        {
+            
+
             for (int p_y = 0; p_y < brick_count_y - 0; p_y++)
             {
                 Point p = getPoint(p_x, p_y);
                 Point r = getPoint(p_x + 1, p_y);
                 Point d = getPoint(p_x, p_y + 1);
 
-                int mid_x = (p.x + x_dif/2);
+
+                List<int> ign_x_top = generateRandomWalk((y_dif - mortar_width) / 2, 
+                    (x_dif - mortar_height) / 2 - (-x_dif + mortar_height) / 2,
+                    p_x + p_y * 10);
+                List<int> ign_x_bottom = generateRandomWalk((-y_dif + mortar_width) / 2, 
+                    (x_dif - mortar_height) / 2 - (-x_dif + mortar_height) / 2,
+                    p_x + p_y * 10);
+
+                List<int> ign_y_right = generateRandomWalk((-x_dif + mortar_height) / 2,
+                    (y_dif - mortar_width) / 2 - (-y_dif + mortar_width) / 2,
+                    p_x + p_y * 10);
+                List<int> ign_y_left = generateRandomWalk((x_dif - mortar_height) / 2,
+                    (y_dif - mortar_width) / 2 - (-y_dif + mortar_width) / 2,
+                    p_x + p_y * 10);
+
+                int mid_x = (p.x + x_dif / 2);
                 int mid_y = (p.y + y_dif / 2);
 
-                if ( r != null)
+                if (r != null)
                 {
                     mid_x = (p.x + r.x) / 2;
                 }
@@ -86,31 +104,37 @@ public class CreateTexture : MonoBehaviour
                 //Generate the brick texture at each brick.
                 List<Color> colors = new List<Color>();
                 List<Color> normals = new List<Color>();
-                if(gen_brick)
-                { 
+                if (gen_brick)
+                {
                     bn.GenerateTexture(x_dif - mortar_width, y_dif - mortar_height, ref colors, ref normals, (int)Random.value * 100);
                     bn.perlinOffset -= (int)(1000 * Random.value);
-				}
-                else if(gen_con)
+                }
+                else if (gen_con)
                 {
                     cn.GenerateTexture(x_dif - mortar_width, y_dif - mortar_height, ref colors, ref normals);
                     cn.perlinOffset -= (int)(1000 * Random.value);
-				}
-                else if(gen_cera)
+                }
+                else if (gen_cera)
                 {
                     rn.GenerateTexture(x_dif - mortar_width, y_dif - mortar_height, ref colors, ref normals);
-					rn.perlinOffset -= (int)(1000 * Random.value);
-				}
+                    rn.perlinOffset -= (int)(1000 * Random.value);
+                }
                 int x_count = 0, y_count = 0;
-                for(int y = (-y_dif + mortar_width) / 2; y < (y_dif - mortar_width) / 2; y++)
+                for (int y = (-y_dif + mortar_width) / 2; y < (y_dif - mortar_width) / 2; y++)
                 {
                     for (int x = (-x_dif + mortar_height) / 2; x < (x_dif - mortar_height) / 2; x++)
                     {
-                        
-                        if (p.x + x >= 0 && p.x + x < resolution_x &&
-                            p.y + y >= 0 && p.y + y < resolution_y)
-                            //texture.SetPixel(p.x + x , p.y + y, Color.magenta);
-                            texture.SetPixel(p.x + x , p.y + y, colors[x_count + y_count * (x_dif - mortar_width / 1)]);
+
+                        if (ign_x_top[x_count]> y && ign_x_bottom[x_count] < y &&
+                            ign_y_right[y_count] < x && ign_y_left[y_count] > x)
+                        { 
+                            if (p.x + x >= 0 && p.x + x < resolution_x &&
+                                p.y + y >= 0 && p.y + y < resolution_y)
+                            { 
+                                //texture.SetPixel(p.x + x , p.y + y, Color.magenta);
+                                texture.SetPixel(p.x + x, p.y + y, colors[x_count + y_count * (x_dif - mortar_width / 1)]);
+                            }
+                        }
                         x_count++;
                     }
                     y_count++;
@@ -118,7 +142,7 @@ public class CreateTexture : MonoBehaviour
                 }
 
             }
-
+        }
 
         for (int p_x = 0; p_x < brick_count_x; p_x++)
             for (int p_y = 0; p_y < brick_count_y; p_y++)
@@ -136,6 +160,22 @@ public class CreateTexture : MonoBehaviour
 		binary.Write(bytes);
 		file.Close();
 	}
+
+    private List<int> generateRandomWalk(int init_pos, int length, int _rand)
+    {
+        List<int> ret = new List<int>();
+        Random.InitState(init_pos + Mathf.CeilToInt(Time.time) + _rand);
+        ret.Add(init_pos);
+        for(int i=0;i < length - 1;i++)
+        {
+            int rand = Random.Range(-1, 2);
+            if (Mathf.Abs(ret[i] + rand - init_pos) < erode_height)
+                ret.Add(ret[i] + rand);
+            else
+                ret.Add(ret[i]);
+        }
+        return ret;
+    }
 
     //Returns null if the point is invalid
     private Point getPoint(int x, int y)
