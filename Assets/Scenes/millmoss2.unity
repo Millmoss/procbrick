@@ -304,6 +304,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 662f650917ef25441b1c54a77ffe23fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  img: {fileID: 2800000, guid: d8207d8990645174dbcdeda9dd2446ae, type: 3}
+  imgmat: {fileID: 2100000, guid: a668a2c6e4d280c4e8445105bed76f8f, type: 2}
   perlinMult: 0.05
   perlinOffset: 100
   xSize: 128
