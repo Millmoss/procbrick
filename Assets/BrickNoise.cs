@@ -122,7 +122,7 @@ public class BrickNoise : MonoBehaviour
 							continue;
 						}
 						i++;
-						cracks[Mathf.RoundToInt(position.x) + x, Mathf.RoundToInt(position.y) + y] *= Mathf.Clamp01(Mathf.Abs(x) + Mathf.Abs(y) / (1f * crackWidth));
+						cracks[Mathf.RoundToInt(position.x) + x, Mathf.RoundToInt(position.y) + y] *= Mathf.Clamp01((Mathf.Abs(x) + Mathf.Abs(y)) / (1f * crackWidth));
 					}
 				}
 				float xShift = 2 * (Random.value - .5f) * crackShift;
