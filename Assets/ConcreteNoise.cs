@@ -46,7 +46,7 @@ public class ConcreteNoise : MonoBehaviour
 			{
 				if (x == 0 || y == 0 || y == ySize - 1 || x == xSize - 1 || spots[x, y] >= 0.9f)
 				{
-                    colors.Add(new Color(.5f, .5f, 1) + new Color(0, 0, 0, 255));
+					normals.Add(new Color(.5f, .5f, 1, 1));
 					continue;
 				}
 				float xDif = spots[x + 1, y] - spots[x, y] + spots[x, y] - spots[x - 1, y];
@@ -56,7 +56,14 @@ public class ConcreteNoise : MonoBehaviour
 				Vector3 dir = new Vector3(-xDif, -(xDif + yDif) / 2, -yDif);
 				dir += Vector3.one;
 				dir /= 2;
-                colors.Add(new Color(dir.x, dir.y, dir.z, 255));
+				float dx = spots[x + 1, y] - spots[x - 1, y];
+				float dy = spots[x, y + 1] - spots[x, y - 1];
+				float div = Mathf.Sqrt(dx * dx + dy * dy + 1);
+				float xn = -dx / div;
+				float yn = -dy / div;
+				float zn = 1 / div;
+
+				normals.Add(new Color((xn + 1) / 2, (yn + 1) / 2, zn, 1));
 			}
 		}
 	}
