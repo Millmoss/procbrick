@@ -140,7 +140,7 @@ public class BrickNoise : MonoBehaviour
 				if (x == 0 || y == 0 || y == ySize - 1 || x == xSize - 1 || (holes[x, y] >= 0.9f && cracks[x, y] >= 0.9f))
 				{
 					colors.Add(brickColor * pixels[x, y] * cracks[x, y]);
-					normals.Add(new Color(.5f, .5f, 1f));
+					normals.Add(new Color(.5f, .5f, 1f, 1));
 					continue;
 				}
 				if (cracks[x, y] >= 0.9f)
@@ -152,7 +152,7 @@ public class BrickNoise : MonoBehaviour
 					float yn = -dy / div;
 					float zn = 1 / div;
 
-					normals.Add(new Color((xn + 1) / 2, (yn + 1) / 2, zn));
+					normals.Add(new Color((xn + 1) / 2, (yn + 1) / 2, zn, 1));
 					colors.Add(brickColor * pixels[x, y] * cracks[x, y]);
 				}
 				else
@@ -164,7 +164,7 @@ public class BrickNoise : MonoBehaviour
 					float yn = -dy / div;
 					float zn = 1 / div;
 
-					normals.Add(new Color((xn + 1) / 2, (yn + 1) / 2, zn));
+					normals.Add(new Color((xn + 1) / 2, (yn + 1) / 2, zn, 1));
 					colors.Add(brickColor * pixels[x, y] * cracks[x, y]);
 				}
 			}
