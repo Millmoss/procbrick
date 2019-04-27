@@ -52,7 +52,8 @@ public class BrickNoise : MonoBehaviour
 					zHole = 1;
 				holes[x, y] = zHole;
 				cracks[x, y] = 1;
-				pixels[x, y] = zSplotch * zHole;
+				//pixels[x, y] = zSplotch * zHole;
+				pixels[x, y] = zSplotch;// * zHole;		//uncomment for no normals
 			}
 		}
 
@@ -143,7 +144,7 @@ public class BrickNoise : MonoBehaviour
 					normals.Add(new Color(.5f, .5f, 1f, 1));
 					continue;
 				}
-				if (cracks[x, y] >= 0.9f)
+				if (cracks[x, y] >= 0.3f)
 				{
 					float dx = holes[x + 1, y] - holes[x - 1, y];
 					float dy = holes[x, y + 1] - holes[x, y - 1];
@@ -153,7 +154,8 @@ public class BrickNoise : MonoBehaviour
 					float zn = 1 / div;
 
 					normals.Add(new Color((xn + 1) / 2, (yn + 1) / 2, zn, 1));
-					colors.Add(brickColor * pixels[x, y] * cracks[x, y]);
+					//colors.Add(brickColor * pixels[x, y] * holes[x, y]);		//uncomment for no normals
+					colors.Add(brickColor * pixels[x, y]);
 				}
 				else
 				{
@@ -165,7 +167,8 @@ public class BrickNoise : MonoBehaviour
 					float zn = 1 / div;
 
 					normals.Add(new Color((xn + 1) / 2, (yn + 1) / 2, zn, 1));
-					colors.Add(brickColor * pixels[x, y] * cracks[x, y]);
+					//colors.Add(brickColor * pixels[x, y] * cracks[x, y]);		//uncomment for no normals
+					colors.Add(brickColor * pixels[x, y]);
 				}
 			}
 		}

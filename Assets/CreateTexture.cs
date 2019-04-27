@@ -133,9 +133,9 @@ public class CreateTexture : MonoBehaviour
                         { 
                             if (p.x + x >= 0 && p.x + x < resolution_x &&
                                 p.y + y >= 0 && p.y + y < resolution_y)
-                            { 
-                                //texture.SetPixel(p.x + x , p.y + y, Color.magenta);
-                                texture.SetPixel(p.x + x, p.y + y, colors[x_count + y_count * (x_dif - mortar_width / 1)]);
+                            {
+								normal.SetPixel(p.x + x, p.y + y, normals[x_count + y_count * (x_dif - mortar_width / 1)]);
+								texture.SetPixel(p.x + x, p.y + y, colors[x_count + y_count * (x_dif - mortar_width / 1)]);
                             }
                         }
                         x_count++;
@@ -157,7 +157,7 @@ public class CreateTexture : MonoBehaviour
         texture.Apply();
         mat.mainTexture = texture;
 
-		 byte[] bytes = ImageConversion.EncodeToPNG(normal);
+		byte[] bytes = ImageConversion.EncodeToPNG(normal);
 		FileStream file = File.Open(Application.dataPath + "/n.png", FileMode.Create);
 		BinaryWriter binary = new BinaryWriter(file);
 		binary.Write(bytes);

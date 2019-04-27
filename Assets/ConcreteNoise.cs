@@ -36,7 +36,7 @@ public class ConcreteNoise : MonoBehaviour
 					zSpot = 1;
 				zSpot = (zSpot + 3f) / 4f;
 				spots[x, y] = zSpot;
-				colors.Add(concreteColor * zSplotch * zBlotch * zSpot + new Color(0, 0, 0, 255));
+				colors.Add(concreteColor * zSplotch * zBlotch /* zSpot*/ + new Color(0, 0, 0, 255));
 			}
 		}
 

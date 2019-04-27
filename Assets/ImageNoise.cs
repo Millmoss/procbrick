@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ProceduralNoiseProject;
 
-public class SecretExperimentalScript : MonoBehaviour
+public class ImageNoise : MonoBehaviour
 {
 	public Texture2D img;
 	public Material imgmat;
@@ -52,9 +52,9 @@ public class SecretExperimentalScript : MonoBehaviour
 			float xf = 0;
 			for (int x = 1; x < xSize; x++)
 			{
-				xf += Mathf.Abs(pixelAvgs[x, y] - pixelAvgs[x - 1, y]) * (((float)x) / xSize);
+				xf += Mathf.Abs(pixelAvgs[x, y] - pixelAvgs[x - 1, y]) * ((xSize / 2.0f) / xSize);
 			}
-			xft += xf * (((float)y) / ySize);
+			xft += xf * ((ySize / 2.0f) / ySize);
 		}
 		print(xft);
 
@@ -64,9 +64,9 @@ public class SecretExperimentalScript : MonoBehaviour
 			float yf = 0;
 			for (int y = 1; y < ySize; y++)
 			{
-				yf += Mathf.Abs(pixelAvgs[x, y] - pixelAvgs[x, y - 1]) * (((float)y) / ySize);
+				yf += Mathf.Abs(pixelAvgs[x, y] - pixelAvgs[x, y - 1]) * ((ySize / 2.0f) / ySize);
 			}
-			yft += yf * (((float)x) / xSize);
+			yft += yf * ((xSize / 2.0f) / xSize);
 		}
 		print(yft);
 
