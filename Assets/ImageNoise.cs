@@ -17,8 +17,9 @@ public class ImageNoise : MonoBehaviour
 	private Color avgColor;
 	private Color hiColor;
 	private Color loColor;
+    private Texture2D outTexture;
 
-    void Start()
+    void Awake()
     {
 		pixelAvgs = new float[img.width, img.height];
 		xSize = img.width;
@@ -73,7 +74,7 @@ public class ImageNoise : MonoBehaviour
 		float ft = (xft + yft) / (.2f * xSize * ySize);
 		print(ft);
 
-		Texture2D outTexture = new Texture2D(xSize, ySize);
+		outTexture = new Texture2D(xSize, ySize);
 
 		Noise sn = new SimplexNoise(1, ft);
 		Noise pn = new PerlinNoise(1, ft);
@@ -92,9 +93,15 @@ public class ImageNoise : MonoBehaviour
 			}
 		}
 		outTexture.Apply();
+        
+        imgmat.mainTexture = outTexture;
+    }
 
-		imgmat.mainTexture = outTexture;
-	}
+    public Color GetNoise(int x, int y)
+    {
+        Color tmp = outTexture.GetPixel(x, y);
+        return tmp;
+    }
 	
     void Update()
     {

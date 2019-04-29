@@ -10,6 +10,7 @@ public class CreateTexture : MonoBehaviour
     Texture2D texture;
 	Texture2D normal;
     public Material mat;
+    public ImageNoise im;
 
     public int num_brick_x, num_brick_y;
     public int resolution_x, resolution_y;
@@ -20,7 +21,7 @@ public class CreateTexture : MonoBehaviour
     public CeramicNoise rn;
     public Color between_color = Color.gray;
     public int erode_height = 5;
-    public bool gen_brick, gen_con, gen_cera, stagger_tiles;
+    public bool gen_brick, gen_con, gen_cera, stagger_tiles, use_image_noise;
 
     private int brick_count_x, brick_count_y;
     private Point[] points;
@@ -31,7 +32,7 @@ public class CreateTexture : MonoBehaviour
     //This is just the general render function, should prob push it in its own spot.
     void Start()
     {
-
+        print("E");
         brick_count_x = num_brick_x;
         brick_count_y = num_brick_y;
         x_dif = resolution_x / (brick_count_x);
@@ -59,8 +60,10 @@ public class CreateTexture : MonoBehaviour
         {
             for(int x=0;x < resolution_x;x++)
             {
-                float pn = Mathf.PerlinNoise(x * .05f, y * .05f);
-                texture.SetPixel(x, y, between_color * (0.95f + pn*.05f) + new Color(0, 0, 0, 255));
+                float pn;
+                pn = Mathf.PerlinNoise(x * .05f, y * .05f);
+
+                texture.SetPixel(x, y, between_color * (0.95f + pn * .05f) + new Color(0, 0, 0, 255));
 				normal.SetPixel(x, y, new Color(.5f, .5f, 1));
 				//texture.SetPixel(x, y, between_color * pn + new Color(0, 0, 0, 255));
 				perlin_offset++;
@@ -69,8 +72,6 @@ public class CreateTexture : MonoBehaviour
         //Set positions of point's colors.
         for (int p_x = 0; p_x < brick_count_x - 0; p_x++)
         {
-            
-
             for (int p_y = 0; p_y < brick_count_y - 0; p_y++)
             {
                 Point p = getPoint(p_x, p_y);
@@ -135,7 +136,10 @@ public class CreateTexture : MonoBehaviour
                                 p.y + y >= 0 && p.y + y < resolution_y)
                             {
 								normal.SetPixel(p.x + x, p.y + y, normals[x_count + y_count * (x_dif - mortar_width / 1)]);
-								texture.SetPixel(p.x + x, p.y + y, colors[x_count + y_count * (x_dif - mortar_width / 1)]);
+                                if (use_image_noise)
+                                    texture.SetPixel(p.x + x, p.y + y, im.GetNoise(p.x + x, p.y + y));
+                                else
+                                    texture.SetPixel(p.x + x, p.y + y, colors[x_count + y_count * (x_dif - mortar_width / 1)]);
                             }
                         }
                         x_count++;
