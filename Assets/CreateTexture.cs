@@ -166,7 +166,13 @@ public class CreateTexture : MonoBehaviour
 		BinaryWriter binary = new BinaryWriter(file);
 		binary.Write(bytes);
 		file.Close();
-	}
+
+        bytes = ImageConversion.EncodeToPNG(texture);
+        file = File.Open(Application.dataPath + "/texture.png", FileMode.Create);
+        binary = new BinaryWriter(file);
+        binary.Write(bytes);
+        file.Close();
+    }
 
     private List<int> generateRandomWalk(int init_pos, int length, int _rand)
     {

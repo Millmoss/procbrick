@@ -222,7 +222,7 @@ MonoBehaviour:
   bn: {fileID: 1217885}
   cn: {fileID: 1217886}
   rn: {fileID: 1217887}
-  between_color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  between_color: {r: 0.8018868, g: 0.8018868, b: 0.8018868, a: 1}
   erode_height: 2
   gen_brick: 1
   gen_con: 0
